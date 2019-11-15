@@ -106,7 +106,7 @@ int generMap(Map map[LONGUEUR][LARGEUR],WINDOW *win)
 							map[j][i].content = FLOOR;
 							map[j][i].effect = 3; // set lava
 						}
-						else if(n == 4 && rand()%(LONGUEUR*LARGEUR/12) == 0)
+						else if(n == 4 && rand()%(LONGUEUR*LARGEUR/16) == 0)
 						{
 							map[j][i].effect = 4; // set a gem
 						}
@@ -114,7 +114,7 @@ int generMap(Map map[LONGUEUR][LARGEUR],WINDOW *win)
 					else
 					{
 						map[j][i].resistance = 0;
-						if(rand()%(LONGUEUR*LARGEUR/20) == 0)
+						if(rand()%(LONGUEUR*LARGEUR/16) == 0)
 						{
 							int trapType = rand()%NBR_TYPES_TRAPS;
 

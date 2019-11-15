@@ -18,7 +18,7 @@ void calcFOV(Map map[LONGUEUR][LARGEUR], int view, int posX, int posY, WINDOW *w
 {
 	const char tileset_ennemies[] = "dtgn";
 	const char tileset_pnj[] = "cwes";
-	const char tileset[] = " .#>=!+]/;*";
+	const char tileset[] = " .#>=!+]/;* ?";
 
 	float i = 0;
 	float j = 0;
@@ -214,6 +214,12 @@ void calcFOV(Map map[LONGUEUR][LARGEUR], int view, int posX, int posY, WINDOW *w
 								mvwprintw(win_map,(int)ox+1,(int)oy+1,">");
 								wattroff(win_map,COLOR_PAIR(STAIRS_COLOR));		
 							}
+							else if(map[(int)ox][(int)oy].content == COMPUTER)
+							{
+								wattron(win_map,COLOR_PAIR(STAIRS_COLOR));
+								mvwprintw(win_map,(int)ox+1,(int)oy+1,"?");
+								wattroff(win_map,COLOR_PAIR(STAIRS_COLOR));					
+							}
 							else if(map[(int)ox][(int)oy].content == HOLE)
 							{
 								wattron(win_map,COLOR_PAIR(COLOR_HOLE));
@@ -387,7 +393,7 @@ void flashBomb(WINDOW *win_map)
 void recalcScreen(WINDOW *win_map, Map map[LONGUEUR][LARGEUR], int nbrEnnemies, Ennemy ennemies[])
 {
 	const char tileset_ennemies[] = "dtgn";
-	const char tileset[] = " .#>=!+]/;*";
+	const char tileset[] = " .#>=!+]/;* ?";
 	const char tileset_pnj[] = "cwes";
 	
 	int j = 0;
@@ -413,7 +419,7 @@ void recalcScreen(WINDOW *win_map, Map map[LONGUEUR][LARGEUR], int nbrEnnemies, 
 						mvwprintw(win_map,j+1,i+1," ");
 						wattroff(win_map,COLOR_PAIR(COLOR_HOLE));	
 					}
-					else if(map[j][i].content == MINES || map[j][i].content == DIST_WEAPON || map[j][i].content == CONTACT_WEAPON || map[j][i].content == DRUG)
+					else if(map[j][i].content == MINES || map[j][i].content == DIST_WEAPON || map[j][i].content == CONTACT_WEAPON || map[j][i].content == DRUG || map[j][i].content == COMPUTER)
 					{
 						wattron(win_map,A_BOLD);
 						mvwprintw(win_map,j+1,i+1,"%c",tileset[map[j][i].content]);

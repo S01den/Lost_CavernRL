@@ -6,6 +6,7 @@
 #define NBR_TILES 5 // number of tiles which aren't items
 #define NBR_TYPES_TRAPS 3
 
+#define COMPUTER 12
 #define PNJ 11
 #define BOMB 10
 #define DIST_WEAPON 9
@@ -156,7 +157,7 @@ typedef struct Player
 	int agility;
 	int hate;
 	int view;
-	int state; // normal, burned, paralysed, high,
+	int state; // normal, burned, paralysed, high, powered
 	int state2; // same
 	int colorBlind;
 	int inventorySize;
@@ -164,4 +165,3 @@ typedef struct Player
 } Player;
 
 #endif
-

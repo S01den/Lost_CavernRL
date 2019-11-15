@@ -11,6 +11,7 @@
 #include "constantes.h"
 #include "map.h"
 #include "ennemy.h"
+#include "menu.h"
 
 
 void moveRand(Ennemy ennemies[], Map map[LONGUEUR][LARGEUR], int indice) 
@@ -159,89 +160,110 @@ void iaCore(Ennemy ennemies[], Player *player, Map map[LONGUEUR][LARGEUR], int *
 			switch(ennemies[i].type)
 			{
 				case 1: // droid
-					if(ennemies[i].seen == 0)
+					if(ennemies[i].boss == 3)
 					{
-						moveRand(ennemies,map,i);
-					}
-					else
-					{
-						action = rand()%10;
-						if(action > 7 || (ennemies[i].life <= 15 && action > 4)) 
+						action = rand()%100+1;
+						if(action <= 10)
 						{
-							wclear(win_msg);
-							repair(ennemies,i, colorPrint, messagePrint);
+							snprintf(messagePrint,100,"YOU CAN'T WIN THIS GAME!");
+							player->life -= rand()%5+1;
+							player->state = rand()%3+1;
+							popUpArchitect();
 						}
-						else if(action == 0)
+						else if(action > 10 && action <= 30)
+						{
+							map[player->x+1][player->y].content = WALL;
+							map[player->x+1][player->y].resistance = 10;
+							map[player->x-1][player->y].content = WALL;
+							map[player->x-1][player->y].resistance = 10;
+							map[player->x][player->y+1].content = WALL;
+							map[player->x][player->y+1].resistance = 10;
+							map[player->x][player->y-1].content = WALL;
+							map[player->x][player->y-1].resistance = 10;
+						}
+						else if(action > 30 && action <= 40)
+						{
+							int n = 0;
+							for(n = 0; n < LARGEUR; n++)
+							{
+								map[ennemies[i].x+1][n].content = WALL;
+								map[ennemies[i].x+1][n].resistance = 5;
+								map[ennemies[i].x+2][n].effect = 1;
+							}
+						}
+						else if(action > 40 && action <= 60)
+						{
+							int n = 0;
+							for(n = 0; n < LONGUEUR; n++)
+							{
+								map[n][player->y-1].effect = 1;
+								map[n][player->y+1].effect = 1;
+							}				
+						}
+						else if(action > 60 && action <= 70)
+						{
+							int n = 0;
+							int m = 0;
+							int col = rand()%LARGEUR;
+							for(m = col; m < LARGEUR; m++)
+							{
+								for(n = 0; n < LONGUEUR; n++)
+								{
+									if(player->x == n && player->y == m)
+									{
+										player->life -= 10;
+									}
+									else
+									{
+										map[n][m].content = WALL;
+										map[n][m].resistance = 5;
+									}
+								}	
+							}
+						}
+						else if(action > 70 && action <= 95)
 						{
 							moveRand(ennemies,map,i);
 						}
 						else
 						{
-							if(abs(player->x-ennemies[i].x) <= 1 && abs(player->y-ennemies[i].y) <= 1)
+							map[rand()%LONGUEUR][rand()%LARGEUR].effect = 3;
+						}
+					}
+					else
+					{
+						if(ennemies[i].seen == 0)
+						{
+							moveRand(ennemies,map,i);
+						}
+						else
+						{
+							action = rand()%10;
+							if(action > 7 || (ennemies[i].life <= 15 && action > 4)) 
 							{
-								//melee
-								if(rand()%101 <= ennemies[i].efficiency)
-								{
-									int degats = ennemies[i].strength*2 + rand()%3+1 - abs(armor->resistance);
-									if(degats > 0)
-									{
-										armor->state -= degats/3;
-										player->life -= degats/2;
-										wclear(win_msg);
-										*colorPrint = 197; // RED LIKE BLOOOOOOOD
-										snprintf(messagePrint,100,"%s HITS YOU WITH HIS ROTATIVE BLADE (-%d LP)",ennemies[i].name,degats/2); 
-										*source = 7;
-									}
-								}
-								else
-								{
-									wclear(win_msg);
-									*colorPrint = 47;
-									snprintf(messagePrint,100,"%s MISSED YOU !",ennemies[i].name);
-								}
+								wclear(win_msg);
+								repair(ennemies,i, colorPrint, messagePrint);
+							}
+							else if(action == 0)
+							{
+								moveRand(ennemies,map,i);
 							}
 							else
 							{
-								if(ennemies[i].haveBlaster != 1)
+								if(abs(player->x-ennemies[i].x) <= 1 && abs(player->y-ennemies[i].y) <= 1)
 								{
-									if(abs(player->x - ennemies[i].x) > abs(player->y-ennemies[i].y))
-									{
-										if(player->x > ennemies[i].x)
-										{
-											if(map[ennemies[i].x+1][ennemies[i].y].content != WALL && map[ennemies[i].x+1][ennemies[i].y].content != DOOR)
-												ennemies[i].x++;
-										}
-										else
-										{
-											if(map[ennemies[i].x-1][ennemies[i].y].content != WALL && map[ennemies[i].x-1][ennemies[i].y].content != DOOR)
-												ennemies[i].x--;
-										}
-									}
-									else
-									{
-										if(player->y > ennemies[i].y)
-										{
-											if(map[ennemies[i].x][ennemies[i].y+1].content != WALL && map[ennemies[i].x][ennemies[i].y+1].content != DOOR)
-												ennemies[i].y++;
-										}
-										else
-										{
-											if(map[ennemies[i].x][ennemies[i].y-1].content != WALL && map[ennemies[i].x][ennemies[i].y-1].content != DOOR)
-												ennemies[i].y--;
-										}
-									}
-								}
-								else
-								{
+									//melee
 									if(rand()%101 <= ennemies[i].efficiency)
 									{
-										degats = blastHit(ennemies[i],player,armor,map);
+										int degats = ennemies[i].strength*2 + rand()%3+1 - abs(armor->resistance);
 										if(degats > 0)
 										{
+											armor->state -= degats/3;
+											player->life -= degats/2;
 											wclear(win_msg);
 											*colorPrint = 197; // RED LIKE BLOOOOOOOD
-											snprintf(messagePrint,100,"%s HITS YOU WITH HIS HIS BLASTER (-%d LP)",ennemies[i].name,degats/2);	
-											*source = 7;			
+											snprintf(messagePrint,100,"%s HITS YOU WITH HIS ROTATIVE BLADE (-%d LP)",ennemies[i].name,degats/2); 
+											*source = 7;
 										}
 									}
 									else
@@ -249,6 +271,58 @@ void iaCore(Ennemy ennemies[], Player *player, Map map[LONGUEUR][LARGEUR], int *
 										wclear(win_msg);
 										*colorPrint = 47;
 										snprintf(messagePrint,100,"%s MISSED YOU !",ennemies[i].name);
+									}
+								}
+								else
+								{
+									if(ennemies[i].haveBlaster != 1)
+									{
+										if(abs(player->x - ennemies[i].x) > abs(player->y-ennemies[i].y))
+										{
+											if(player->x > ennemies[i].x)
+											{
+												if(map[ennemies[i].x+1][ennemies[i].y].content != WALL && map[ennemies[i].x+1][ennemies[i].y].content != DOOR)
+													ennemies[i].x++;
+											}
+											else
+											{
+												if(map[ennemies[i].x-1][ennemies[i].y].content != WALL && map[ennemies[i].x-1][ennemies[i].y].content != DOOR)
+													ennemies[i].x--;
+											}
+										}
+										else
+										{
+											if(player->y > ennemies[i].y)
+											{
+												if(map[ennemies[i].x][ennemies[i].y+1].content != WALL && map[ennemies[i].x][ennemies[i].y+1].content != DOOR)
+													ennemies[i].y++;
+											}
+											else
+											{
+												if(map[ennemies[i].x][ennemies[i].y-1].content != WALL && map[ennemies[i].x][ennemies[i].y-1].content != DOOR)
+													ennemies[i].y--;
+											}
+										}
+									}
+									else
+									{
+										if(rand()%101 <= ennemies[i].efficiency)
+										{
+											degats = blastHit(ennemies[i],player,armor,map);
+											if(degats > 0)
+											{
+												wclear(win_msg);
+												*colorPrint = 197; // RED LIKE BLOOOOOOOD
+												snprintf(messagePrint,100,"%s HITS YOU WITH HIS HIS BLASTER (-%d LP)",ennemies[i].name,degats/2);	
+												*source = 7;			
+											}
+										}
+										else
+										{
+											wclear(win_msg);
+											*colorPrint = 47;
+											snprintf(messagePrint,100,"%s MISSED YOU !",ennemies[i].name);
+										}
 									}
 								}
 							}
@@ -439,30 +513,33 @@ void iaCore(Ennemy ennemies[], Player *player, Map map[LONGUEUR][LARGEUR], int *
 						}
 						else
 						{
-							if(abs(player->x - ennemies[i].x) > abs(player->y-ennemies[i].y))
+							if(rand()%10+1 < 8)
 							{
-								if(player->x > ennemies[i].x)
+								if(abs(player->x - ennemies[i].x) > abs(player->y-ennemies[i].y))
 								{
-									if(map[ennemies[i].x+1][ennemies[i].y].content != WALL && map[ennemies[i].x+1][ennemies[i].y].content != DOOR)
-										ennemies[i].x++;
+									if(player->x > ennemies[i].x)
+									{
+										if(map[ennemies[i].x+1][ennemies[i].y].content != WALL && map[ennemies[i].x+1][ennemies[i].y].content != DOOR)
+											ennemies[i].x++;
+									}
+									else
+									{
+										if(map[ennemies[i].x-1][ennemies[i].y].content != WALL && map[ennemies[i].x-1][ennemies[i].y].content != DOOR)
+											ennemies[i].x--;
+									}
 								}
 								else
 								{
-									if(map[ennemies[i].x-1][ennemies[i].y].content != WALL && map[ennemies[i].x-1][ennemies[i].y].content != DOOR)
-										ennemies[i].x--;
-								}
-							}
-							else
-							{
-								if(player->y > ennemies[i].y)
-								{
-									if(map[ennemies[i].x][ennemies[i].y+1].content != WALL && map[ennemies[i].x][ennemies[i].y+1].content != DOOR)
-										ennemies[i].y++;
-								}
-								else
-								{
-									if(map[ennemies[i].x][ennemies[i].y-1].content != WALL&& map[ennemies[i].x][ennemies[i].y-1].content != DOOR)
-										ennemies[i].y--;
+									if(player->y > ennemies[i].y)
+									{
+										if(map[ennemies[i].x][ennemies[i].y+1].content != WALL && map[ennemies[i].x][ennemies[i].y+1].content != DOOR)
+											ennemies[i].y++;
+									}
+									else
+									{
+										if(map[ennemies[i].x][ennemies[i].y-1].content != WALL&& map[ennemies[i].x][ennemies[i].y-1].content != DOOR)
+											ennemies[i].y--;
+									}
 								}
 							}
 						}

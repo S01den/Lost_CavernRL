@@ -16,7 +16,6 @@
 #include "map.h"
 
 void initPlayer(Player *player, Inventory inventory[]);
-void initObjects(Weapons listWeapons[], Armor listArmor[]);
 void crystalCanon(Map map[LONGUEUR][LARGEUR], Player player, char dir);
 int shotLine(Map map[LONGUEUR][LARGEUR],Weapons *weaponHold,Ennemy ennemies[], char dir, Player player, int nbrEnnemies,int *components);
 int burn(Map map[LONGUEUR][LARGEUR],Weapons *weaponHold,Ennemy ennemies[], char dir, Player player, int nbrEnnemies, int *components,WINDOW* screen);

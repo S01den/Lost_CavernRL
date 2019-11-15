@@ -161,7 +161,7 @@ void printWeapon(WINDOW *win, Weapons weaponHold)
 		printBar(win,"STATE",weaponHold.state,4,2,247);
 	}
 
-	mvwprintw(win,6,2,"DEGATS: %d",weaponHold.degat);
+	mvwprintw(win,6,2,"DAMAGES: %d",weaponHold.degat);
 
 	wrefresh(win);
 }

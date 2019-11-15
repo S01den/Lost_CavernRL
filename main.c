@@ -42,7 +42,7 @@ _____|\___/ ____/\__|  \____|\__,_|  \_/ \___|_|   _|  _|
 // block a turret with shield and then kill it easily with distance weapons
 // the resistance of crystal armor and the degats of the crystal sword depends on the number of gems the player own.
 
-// 5810 LoC
+// HIGH SCORE perso: 1852
 
 void quit();
 
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 	Inventory inventory[INVENTORY_MAX]; 
 	initPlayer(&player, inventory);
 
-	int floor = 1;
+	int floor = 14;
 	int i = 0;
 	int s = 0;
 	int indiceEnnemy = 0;
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
 		}
 		else if(i+1 >= COLOR_DRUGS-1 && i+1 <= COLOR_DRUGS+NBR_DRUGS)
 		{
-			init_pair(i + 1, rand()%100+1*2, COLOR_BLACK);
+			init_pair(i + 1, (rand()%(100+1))*2, COLOR_BLACK);
 		}
 		else
 		{
@@ -162,7 +162,12 @@ int main(int argc, char **argv)
 	while(keyName != '\n')
 	{
 		keyName = wgetch(win_Begin);
-		if(keyName != '\n' && nameLen <= 14)
+		if(keyName == KEY_BACKSPACE && nameLen > 0)
+		{
+			player.name[nameLen-1] = ' ';
+			nameLen--;
+		}
+		else if(keyName != '\n' && nameLen <= 14)
 		{
 			player.name[nameLen] = keyName;
 			nameLen++;
@@ -202,8 +207,8 @@ int main(int argc, char **argv)
 	}
 
 	mvwprintw(win_Begin,24,0,"Our ancestral cavern is highly threated by the MultiplexCorpThey are picking our gems, destroying our live and\nceremonial places with a mysterious machine...");
-	mvwprintw(win_Begin,27,0,"They are ruining nature of our entire planet until to this  ancestral cave for profit !");
-	mvwprintw(win_Begin,30,0,"A rumor say that the MultiplexCorp's founder, who calls\nhimself \"The Architect\", is here, at the edge of the cavern.\nPlease avenge us, destroy the machine and kill the ArchitectOtherwise our cavern will be lost !");
+	mvwprintw(win_Begin,27,0,"They are destroying all the nature of our planet.\nNot even this ancestral cave is safe.");
+	mvwprintw(win_Begin,30,0,"A rumor say that the MultiplexCorp's founder, who calls\nhimself \"The Architect\", is here, at the edge of the cavern.\nPlease avenge us, destroy the machine and kill the ArchitectOtherwise our cavern will be lost!");
 
 	wattron(win_Begin,A_BOLD);
 	mvwprintw(win_Begin,36,15,"**PRESS A KEY TO BEGIN**");
@@ -312,6 +317,9 @@ int main(int argc, char **argv)
 	while(1)
 	{
 		source = 10;
+
+		iaCore(ennemies,&player,map,&nbrEnnemyInFloor,messagePrint,&colorPrint,&armorHold,win_messages,&source);
+		
 		indicePnj = -1;
 		int indiceQuest = 0;	
 		int retHit = 0;
@@ -329,7 +337,7 @@ int main(int argc, char **argv)
 			player.colorBlind = 0;
 			turn++;
 
-			diseaseLevel += 0.01;
+			diseaseLevel += 0.02;
 			/* diseases functions with stades: stade 1, stade 2, stade 3 and stade 4
 			STADE 1: 0-25	-> FRIST SYMPTOMS: THE PLAYER HAS 1 CHANCE ON 10 TO LOOSE 1 LP ON EACH TURN
 			STADE 2: 25-50  -> INCONFORTABLE STADE: THE PLAYER HAS 1 CHANCE ON 4 TO LOOSE 1 LP ON EACH TURN + APPEARANCE OF SYMPTOMS
@@ -476,14 +484,6 @@ int main(int argc, char **argv)
 			if(gameStatus == 2)
 			{	
 				score += 50*floor;
-				for(indiceQuest = 0; indiceQuest < NBR_QUESTS_MAX; indiceQuest++)
-				{
-					if(actQuest[indiceQuest].indice == 1)
-					{
-						turnArmor++;
-						break;
-					}
-				}
 				
 				if(questDrug)
 				{
@@ -553,6 +553,8 @@ int main(int argc, char **argv)
 							ennemies[0].boss = 1;
 							break;
 						case 15:
+							player.x = LONGUEUR/2+5;
+							player.y = LARGEUR/2;
 							nbrEnnemyInFloor = 1;
 							ennemies[0].life = 300;
 							ennemies[0].x = LONGUEUR/2;
@@ -565,6 +567,9 @@ int main(int argc, char **argv)
 							ennemies[0].effect = 0;
 							ennemies[0].name = "The Architect";
 							ennemies[0].boss = 3;
+
+							snprintf(messagePrint,100,"This is just a game, you can't win...");
+							colorPrint = 166;
 
 							xErase = 0;
 							yErase = 0;
@@ -596,6 +601,20 @@ int main(int argc, char **argv)
 					}
 
 					setObjects(map, listWeapons, weaponsOnFloor, nbrWeaponMax, &nbrWeapons, listArmors ,armorOnFloor, nbrArmorMax, &nbrArmors);
+
+					for(indiceQuest = 0; indiceQuest < NBR_QUESTS_MAX; indiceQuest++)
+					{
+						if(actQuest[indiceQuest].indice == 1)
+						{
+							turnArmor++;
+							break;
+						}
+						if(actQuest[indiceQuest].indice == 3)
+						{
+							map[rand()%LONGUEUR][rand()%LARGEUR].content = COMPUTER;
+							break;
+						}
+					}
 				}
 			}
 			if(map[player.x][player.y].content == WALL)
@@ -638,12 +657,7 @@ int main(int argc, char **argv)
 		{
 			turnParalysed = 3;
 			if(c >= '1' && c <= '9')
-			{
-				wclear(win_inventory);
-				wclear(win_weapon);
-				wclear(win_userSpace);
-				wclear(win_messages);
-				
+			{				
 				int caseInventory = c-'0'-1;
 				if(inventory[caseInventory].type == 2)
 				{
@@ -691,6 +705,10 @@ int main(int argc, char **argv)
 						map[player.x+1][player.y].effect = 3;
 					}
 				}
+				wclear(win_inventory);
+				wclear(win_weapon);
+				wclear(win_userSpace);
+				wclear(win_messages);
 			}
 			else
 			{		
@@ -946,7 +964,7 @@ int main(int argc, char **argv)
 					{
 						actQuest[indiceQuest].isSet = 0;
 						colorPrint = 197;
-						snprintf(messagePrint,100,"YOU USED A DRUG, THE QUEST \"EXHIBITIONIST\" IS CANCELLED !");
+						snprintf(messagePrint,100,"YOU WEAR AN ARMOR, THE QUEST \"EXHIBITIONIST\" IS CANCELLED !");
 						wclear(win_userSpace);
 						wclear(win_messages);		
 					}
@@ -1010,10 +1028,35 @@ int main(int argc, char **argv)
 						}
 					}
 				}
+				else if(actQuest[indiceQuest].indice == 3)
+				{
+					if(map[player.x][player.y].content == COMPUTER)
+					{
+						map[player.x][player.y].content = FLOOR;
+						actQuest[indiceQuest].isSet = 0;
+						if(passwordComputer())
+						{
+							nbrQuestsDone++;
+							colorPrint = 47;
+							snprintf(messagePrint,100,"YOU RESTORED THE DATA, YOU FINISHED THE QUEST \"THE LOST COMPUTER\", YOU EARNED 1000 COMPONENTS");
+							score += 100;
+							wclear(win_userSpace);
+							wclear(win_messages);
+						}
+						else
+						{
+							colorPrint = 197;
+							snprintf(messagePrint,100,"WRONG PASSWORD ! YOU FAILED THE QUEST \"THE LOST COMPUTER\"...");
+							wclear(win_userSpace);
+							wclear(win_messages);				
+						}
+					}
+				}
 				else if(actQuest[indiceQuest].indice == 4)
 				{
 					if(retHit == 1 && ennemies[indiceEnnemy].type == 2)
 					{
+						retHit = 0;
 						killTurret++;
 					}
 					if(killTurret >= 5)
@@ -1043,6 +1086,7 @@ int main(int argc, char **argv)
 				{
 					if(retHit == 1 && ennemies[indiceEnnemy].type == 4)
 					{
+						retHit = 0;
 						killGuardian++;
 					}
 					if(killGuardian >= 5)
@@ -1071,6 +1115,7 @@ int main(int argc, char **argv)
 				{
 					if(retHit == 1 && ennemies[indiceEnnemy].type == 1)
 					{
+						retHit = 0;
 						killDroid++;
 					}
 					if(killDroid >= 10)
@@ -1491,10 +1536,13 @@ int main(int argc, char **argv)
 				}
 				break;
 			}
+		}
+
+		if(floor >= 5)
+		{
+			if(rand()%1000 == 42)
+				popUpArchitect();
 		}			
-
-	iaCore(ennemies,&player,map,&nbrEnnemyInFloor,messagePrint,&colorPrint,&armorHold,win_messages,&source);
-
 	}
 
 	quit();

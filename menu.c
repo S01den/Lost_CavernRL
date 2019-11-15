@@ -9,6 +9,8 @@
 #include <termio.h>
 #include <sgtty.h> 
 #include <signal.h>
+#include <form.h>
+
 #include "ennemy.h"
 #include "item.h"
 #include "menu.h"
@@ -54,7 +56,7 @@ void questsMenu(Quest actQuest[], int nbrQuestAct, Weapons listWeapons[], Armor 
 			}
 			else if(actQuest[i].typeReward == 6)
 			{
-				mvwprintw(win,i*3+2,1,"%s:\n%s\n Reward: a drug",actQuest[i].name,actQuest[i].description,actQuest[i].reward,typeRewards[actQuest[i].typeReward]);
+				mvwprintw(win,i*3+2,1,"%s:\n%s\n Reward: a drug",actQuest[i].name,actQuest[i].description);
 			}
 			if(actQuest[i].indice == 4)
 			{
@@ -174,7 +176,7 @@ int pauseMenu()
 		mvwprintw(winKey,9,1,", : QUEST JOURNAL");
 		mvwprintw(winKey,6,1,"[ARROWS] : MOVE");
 		mvwprintw(winKey,7,1,"zsqdaewx : ATTACK ON A DIRECTION (OR TALK TO A PNJ)");
-		mvwprintw(winKey,4,1,"[SHIFT]+A_NUMBER : USE AN OBJECT IN YOUR INVENTORY");
+		mvwprintw(winKey,4,1,"A_NUMBER : USE AN OBJECT IN YOUR INVENTORY");
 		mvwprintw(winKey,5,1,"[ENTER] : USE YOUR SPECIAL POWER");
 
 		wrefresh(winKey);
@@ -501,6 +503,26 @@ int craftMenu(Inventory inventory[], Drug listDrug[], Player player, int *compon
 	return ret;
 }	
 
+void popUpArchitect()
+{
+	WINDOW *win;
+	win = newwin(5,30,rand()%LONGUEUR,rand()%LARGEUR);
+	box(win,0,0);
+	int color = rand()%255+1;
+	wattron(win, COLOR_PAIR(color));
+	mvwprintw(win,1,1,"PFL TRE'K VJTRGV !");
+	mvwprintw(win,2,1,"JKFG");
+	mvwprintw(win,3,1,"**WE ALREADY WON**");
+	if(rand()%100 > 50)
+		mvwprintw(win,4,1,"THEY PAID A LOT FOR THIS WEAPON...");
+	wattroff(win, COLOR_PAIR(color));
+	box(win, ' ', ' ');
+	wborder(win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+	wclear(win);
+	wrefresh(win);
+	delwin(win);
+}
+
 int takeDrug(Map map[LONGUEUR][LARGEUR], Inventory inventory[], Drug drugs[], int indice, char messagePrint[], int *colorPrint, Player *player, double *diseaseLevel)
 {
 	int ret = 0;
@@ -627,7 +649,7 @@ int takeDrug(Map map[LONGUEUR][LARGEUR], Inventory inventory[], Drug drugs[], in
 							}
 							else
 							{
-								player->life += 35;
+								player->life += 20;
 								*colorPrint = 47; 
 								snprintf(messagePrint,100,"YOU TOOK A MEDIPAC, (+20 LP) !");
 							}
@@ -690,7 +712,6 @@ int takeDrug(Map map[LONGUEUR][LARGEUR], Inventory inventory[], Drug drugs[], in
 			wrefresh(win_menuInvent);
 	}
 	
-
 	box(win_menuInvent, ' ', ' ');
 	wborder(win_menuInvent, ' ', ' ', ' ',' ',' ',' ',' ',' ');
 	wclear(win_menuInvent);
@@ -766,4 +787,69 @@ void gameOver(int source, int score)
 	wclear(win);
 	wrefresh(win);
 	delwin(win);	
+}
+
+int passwordComputer()
+{
+	int ret = 1;
+	int k = 0;
+	int i = 0;
+	char password[11];
+	char crypt[] = "\xf4\xb2\xa3\xa8\xf1\xb4\xf3\xa3\xb4\xe1";
+
+	WINDOW *win;
+	win = newwin(7,60,LONGUEUR/2-2, LARGEUR/2+60);
+	box(win,0,0);
+	wattron(win, COLOR_PAIR(47));
+	mvwprintw(win,1,30,"*** CORRUPTION ***");
+	mvwprintw(win,2,1,"PLEASE ENTER THE PASSWORD TO RECOVER YOUR DATA: ");
+	wrefresh(win);
+
+	int keyName = 0;
+	int nameLen = 0;
+	while(keyName != '\n')
+	{
+		keyName = wgetch(win);
+		if(keyName == KEY_BACKSPACE && nameLen > 0)
+		{
+			password[nameLen-1] = ' ';
+			nameLen--;
+		}
+		else if(keyName != '\n' && nameLen < 10)
+		{
+			password[nameLen] = keyName;
+			nameLen++;
+		}
+		mvwprintw(win,3,1,"%s",password);
+		wrefresh(win);
+	}
+
+	for(i = 0; i < 10; i++)
+	{
+		if(password[i] != (crypt[i]^0xc0)) // 4rch1t3ct!
+			ret = 0;
+	}
+
+	if(ret)
+	{
+		mvwprintw(win,4,30,"*** ACCESS GRANTED ! ***");
+		mvwprintw(win,5,1,"- 0x08 -DATA RECOVERED- \"The star-laser is nearly ready... Ask them to raise the price, 1000000000000K is'nt enough...\"");
+		wattroff(win,COLOR_PAIR(47));
+	}
+	else
+	{
+		wattron(win,COLOR_PAIR(197));
+		mvwprintw(win,4,30,"*** ACCESS REFUSED ! ***");
+		mvwprintw(win,5,1,"DATA DELETION DONE...");
+		wattroff(win,COLOR_PAIR(197));
+		wattroff(win,COLOR_PAIR(47));
+	}
+
+	k = wgetch(win);
+	box(win,' ',' ');
+	wborder(win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+	wclear(win);
+	wrefresh(win);
+	delwin(win);	
+	return ret;
 }

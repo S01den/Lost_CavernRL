@@ -100,11 +100,7 @@ int sayQuest(Pnj pnj, Quest listQuests[], Quest actQuests[], int *nbrQuestAct, W
 						select--;
 					break;
 
-				case KEY_LEFT:
-					choice = select;
-					break;
-
-				case KEY_RIGHT:
+				case '\n':
 					choice = select;
 					break;
 			}
@@ -259,15 +255,15 @@ void initQuest(Quest listQuests[])
 	listQuests[2].typeReward = 0;
 	listQuests[2].reward = 100;
 
-	listQuests[3].name = "THE LOST COMPUTER";
-	listQuests[3].description = "I've lost my laptop, it contains some important data, can you please bring me it ?";
+	listQuests[3].name = "THE LOST COMPUTER"; // done
+	listQuests[3].description = "I've lost my laptop, it contains some... important data..., can you please bring me it ?";
 	listQuests[3].typeReward = 2;
-	listQuests[3].reward = 15;
+	listQuests[3].reward = 1000;
 
 	listQuests[4].name = "KILL THE TURRETS, KILL THE TURRETS !"; //done
 	listQuests[4].description = "The turrets are revolting against us ! Please help us to kill 5 of them !";
 	listQuests[4].typeReward = 5;
-	listQuests[4].reward = rand()%6+1;
+	listQuests[4].reward = rand()%NBR_ARMORS;
 
 	listQuests[5].name = "FIXING"; // done
 	listQuests[5].description = "I need 50 components to fix my heal-machine.";
@@ -287,7 +283,7 @@ void initQuest(Quest listQuests[])
 	listQuests[8].name = "BORN OF A BROKEN MAN"; //done
 	listQuests[8].description = "Destroy 10 of theses damn droids; I can't stand this fucking corporation.";
 	listQuests[8].typeReward = 4;
-	listQuests[8].reward = rand()%3+11;
+	listQuests[8].reward = rand()%NBR_WEAPONS;
 
 	listQuests[9].name = "ANOTHER UNIVERSE"; // done
 	listQuests[9].description = "I have to study the effects of hallucinogens drugs. Please kill someone under the effects of psychedelics.";
@@ -297,5 +293,5 @@ void initQuest(Quest listQuests[])
 	listQuests[10].name = "GEMS ARE BLUE"; // done
 	listQuests[10].description = "Thoses gems are a great source of power, we need to study it. Can you bring us 5 gems ?";
 	listQuests[10].typeReward = 4;
-	listQuests[10].reward = rand()%3+11;
+	listQuests[10].reward = rand()%NBR_WEAPONS;
 }
