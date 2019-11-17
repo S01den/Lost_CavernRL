@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 	Inventory inventory[INVENTORY_MAX]; 
 	initPlayer(&player, inventory);
 
-	int floor = 14;
+	int floor = 1;
 	int i = 0;
 	int s = 0;
 	int indiceEnnemy = 0;
