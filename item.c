@@ -1,16 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <math.h>
-#include <curses.h>
-#include <termios.h>
-#include <termio.h>
-#include <sgtty.h> 
-#include <signal.h>
 #include "item.h"
-#include "map.h"
-
 
 void shuffleDrugs(Map map[LONGUEUR][LARGEUR], Drug drugs[], int nbrDrugs, int *nbrDrugsInFloor)
 {

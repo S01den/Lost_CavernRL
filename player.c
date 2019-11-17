@@ -1,19 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <math.h>
-#include <curses.h>
-#include <termios.h>
-#include <termio.h>
-#include <sgtty.h> 
-#include <signal.h>
-
-#include "constantes.h"
-#include "screen.h"
-#include "map.h"
 #include "player.h"
-#include "pnj.h"
 
 
 int hit(char dirChar, int dirX, int dirY, WINDOW *win_map, Player *player, Weapons *weaponHold, Weapons listWeapons[], Map map[LONGUEUR][LARGEUR], int *gem, Ennemy ennemies[], int nbrEnnemyInFloor, int *component, int *exoticBlood, int *compBefore, int *indiceEnnemy, int *retHit, Pnj pnj[], int nbrPnjInFloor, int *indicePnj)

@@ -1,18 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <math.h>
-#include <curses.h>
-#include <termios.h>
-#include <termio.h>
-#include <sgtty.h> 
-#include <signal.h>
-#include "constantes.h"
-#include "map.h"
 #include "ennemy.h"
-#include "menu.h"
-
 
 void moveRand(Ennemy ennemies[], Map map[LONGUEUR][LARGEUR], int indice) 
 {

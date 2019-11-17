@@ -1,19 +1,7 @@
 #ifndef ENNEMY_H_INCLUDED
 #define ENNEMY_H_INCLUDED
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <math.h>
-#include <curses.h>
-#include <termios.h>
-#include <termio.h>
-#include <sgtty.h> 
-#include <signal.h>
-
-#include "constantes.h"
-#include "map.h"
+#include "common.h"
 
 // http://www.roguebasin.com/index.php?title=Monster_attacks_in_a_structured_list very interesting
 

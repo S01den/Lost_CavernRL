@@ -1,18 +1,3 @@
-#include "screen.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <time.h>
-#include <string.h>
-#include <curses.h>
-#include <termios.h>
-#include <termio.h>
-#include <sgtty.h> 
-#include <signal.h>
-#include <form.h>
-
-#include "ennemy.h"
-#include "item.h"
 #include "menu.h"
 
 

@@ -1,18 +1,7 @@
 #ifndef ITEM_H_INCLUDED
 #define ITEM_H_INCLUDED
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <math.h>
-#include <curses.h>
-#include <termios.h>
-#include <termio.h>
-#include <sgtty.h> 
-#include <signal.h>
-#include "constantes.h"
-#include "map.h"
+#include "common.h"
 
 void initObjects(Weapons listWeapons[], Armor listArmor[]);
 void shuffleDrugs(Map map[LONGUEUR][LARGEUR], Drug drugs[], int nbrDrugs, int *nbrDrugsInFloor);

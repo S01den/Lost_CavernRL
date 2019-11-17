@@ -1,17 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <math.h>
-#include <curses.h>
-#include <termios.h>
-#include <termio.h>
-#include <sgtty.h> 
-#include <signal.h>
-#include "constantes.h"
 #include "pnj.h"
-#include "map.h"
-
 
 int testPnjOnPos(Pnj pnj[], int x, int y, int nbrPnj)
 {

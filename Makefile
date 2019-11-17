@@ -14,7 +14,7 @@ SRCS=main.c \
     pnj.c \
     screen.c
 OBJS=$(patsubst %.c,%.o,$(SRCS))
-EXEC=rogueLike
+EXEC=LostCavern
 
 .PHONY: all
 all: $(EXEC)

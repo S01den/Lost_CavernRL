@@ -1,19 +1,8 @@
 #ifndef PLAYER_H_INCLUDED
 #define PLAYER_H_INCLUDED
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <math.h>
-#include <curses.h>
-#include <termios.h>
-#include <termio.h>
-#include <sgtty.h> 
-#include <signal.h>
 
-#include "constantes.h"
-#include "map.h"
+#include "common.h"
 
 void initPlayer(Player *player, Inventory inventory[]);
 void crystalCanon(Map map[LONGUEUR][LARGEUR], Player player, char dir);

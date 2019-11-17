@@ -1,18 +1,4 @@
 #include "screen.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <time.h>
-#include <string.h>
-#include <curses.h>
-#include <termios.h>
-#include <termio.h>
-#include <sgtty.h> 
-#include <signal.h>
-#include "ennemy.h"
-#include "item.h"
-#include "pnj.h"
-
 
 void calcFOV(Map map[LONGUEUR][LARGEUR], int view, int posX, int posY, WINDOW *win_map, Ennemy ennemies[], int nbrEnnemies, int *ennemyPresent, int colorBlind, int stone, Drug drugList[], int nbrDrugs, Weapons weaponOnFloor[], int nbrWeapons, Armor armorOnFloor[], int nbrArmors, Pnj pnjOnFloor[], int nbrPnjOnFloor)
 {

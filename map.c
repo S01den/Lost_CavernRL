@@ -1,17 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <math.h>
-#include <curses.h>
-#include <termios.h>
-#include <termio.h>
-#include <sgtty.h> 
-#include <signal.h>
-#include "constantes.h"
 #include "map.h"
-#include "ennemy.h"
-
 
 int generMap(Map map[LONGUEUR][LARGEUR],WINDOW *win) 
 // Based on a cellular automata (from http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels a bit modified)

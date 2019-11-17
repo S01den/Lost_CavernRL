@@ -1,22 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <math.h>
-#include <string.h>
-#include <curses.h>
-#include <termios.h>
-#include <termio.h>
-#include <sgtty.h> 
-#include <signal.h>
-
-#include "player.h"
-#include "map.h"
-#include "ennemy.h"
-#include "interface.h"
-#include "screen.h"
-#include "item.h"
-#include "menu.h"
-#include "pnj.h"
+#include "common.h"
 
 // Lost Cavern; A roguelike by S01den
 /*
