@@ -5,6 +5,8 @@ In Lost Cavern, you are an activist in a futuristic world who struggle a huge mu
 
 *** This is a Beta version, feel free to contact me at S01den@protonmail.com if you have any suggestion or if you found bugs ***
 
+Discord: https://discord.gg/QdNfjNq
+
 Keys: 
 - Arrows to move
 - zsqd to attack (aewx in diagonal), interact with a npc or destroy a wall
@@ -21,7 +23,3 @@ Keys:
 ![](https://github.com/S01den/Lost_CavernRL/blob/master/images/image2.png)
 
 ![](https://github.com/S01den/Lost_CavernRL/blob/master/images/image3.png)
-
-
-
-Discord: https://discord.gg/QdNfjNq
