@@ -7,9 +7,6 @@
  |     (   |\__ \ |     |     (   | \ \ /  __/ |    |   |
 _____|\___/ ____/\__|  \____|\__,_|  \_/ \___|_|   _|  _|
                                                          */
-// ----------------------------- TO DO LIST -----------------------------
-// CODER LE SECRET (-> ARCHITECT (META))
-// ----------------------------------------------------------------------
 
 //idée de concept: on incarne un écolo radical qui se bat contre une entreprise multiplanetaire (MultiplexCorp) qui detruit une caverne ancestrale pour recolter des gems. 
 //cette entreprise est dirigée par un mystérieux personnage appelé "l'Architecte" (qui est également le boss de fin)
@@ -125,7 +122,7 @@ int main(int argc, char **argv)
 	getmaxyx(stdscr, xScreen, yScreen); // 55 204 for my screen
 
 	WINDOW *win_Begin;
-	win_Begin = newwin(LONGUEUR, 60,xScreen/5,yScreen/3);
+	win_Begin = newwin(LONGUEUR,60,xScreen/6-3,yScreen/3);
 
 	// ************** MAIN MENU *****************
 	keypad(win_Begin, TRUE);
@@ -214,7 +211,7 @@ int main(int argc, char **argv)
 	if(xScreen >= LONGUEUR+2 && yScreen >= LARGEUR+2)
 		win_map = newwin(LONGUEUR+2,LARGEUR+2,4,yScreen/3);
 	else
-		win_map = newwin(xScreen-4,2*yScreen/3,4,yScreen/3);
+		win_map = newwin(xScreen-7,2*yScreen/3,3,yScreen/3);
 
 	WINDOW *win_ennemySpace;
 	win_ennemySpace = newwin(xScreen-5,yScreen/7+1,xScreen/3+2,yScreen/6+2);
@@ -229,7 +226,7 @@ int main(int argc, char **argv)
 	if(xScreen >= LONGUEUR+7 && yScreen >= LARGEUR+2)
 		win_messages = newwin(5,LARGEUR+2,LONGUEUR+7,yScreen/3+1);
 	else
-		win_messages = newwin(5,2*yScreen/3,xScreen-7,yScreen/3+1);
+		win_messages = newwin(3,2*yScreen/3,xScreen-3,yScreen/3+1);
 
 	WINDOW *win_armor;
 	win_armor = newwin(8,30,42,4);
@@ -469,8 +466,11 @@ int main(int argc, char **argv)
 			printWeapon(win_weapon,weaponHold);
 			printInventory(win_inventory, component, exoticBlood, gem, player, inventory, drugs, listWeapons, listArmors);
 			printArmor(win_armor, armorHold);
-			mvwprintw(stdscr,6+LONGUEUR,70,", : QUESTS    [ENTER] : SPECIAL POWER   c : CRAFTING MENU   [ESC] : MENU");
-			mvwprintw(stdscr,3,70+LARGEUR/2-4,"*** FLOOR: -%d ***",floor);
+			if(xScreen >= LONGUEUR+6)
+				mvwprintw(stdscr,LONGUEUR+6,yScreen/7+1,", : QUESTS    [ENTER] : SPECIAL POWER   c : CRAFTING MENU   [ESC] : MENU");
+			else
+				mvwprintw(stdscr,xScreen-4,yScreen/7+1,", : QUESTS    [ENTER] : SPECIAL POWER   c : CRAFTING MENU   [ESC] : MENU");
+			mvwprintw(stdscr,3,yScreen-85,"*** FLOOR: -%d ***",floor);
 
 			if(gameStatus == 2)
 			{	
