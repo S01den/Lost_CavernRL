@@ -121,11 +121,14 @@ int main(int argc, char **argv)
 	init_pair(COLOR_PACIFICATOR,COLOR_RED, COLOR_WHITE);
 	init_pair(STAIRS_COLOR,COLOR_BLACK,COLOR_WHITE); 
 
+	int xScreen = 0, yScreen = 0;
+	getmaxyx(stdscr, xScreen, yScreen); // 55 204 for my screen
+
 	WINDOW *win_Begin;
-	win_Begin = newwin(LONGUEUR, 60,LONGUEUR/4,LARGEUR/2+2);
+	win_Begin = newwin(LONGUEUR, 60,xScreen/5,yScreen/3);
 
 	// ************** MAIN MENU *****************
-	keypad(win_Begin, TRUE);	
+	keypad(win_Begin, TRUE);
 
 	wattron(win_Begin,COLOR_PAIR(124));
 	mvwprintw(win_Begin,1,1," |                |      ___|                            ");
@@ -205,22 +208,28 @@ int main(int argc, char **argv)
 	//*******************************************
 
 	WINDOW *win_userSpace;
-	win_userSpace = newwin(15,30,2,36);
+	win_userSpace = newwin(xScreen/3,yScreen/7,2,yScreen/6+2);
 
 	WINDOW *win_map;
-	win_map = newwin(LONGUEUR+2,LARGEUR+2,4,70);
+	if(xScreen >= LONGUEUR+2 && yScreen >= LARGEUR+2)
+		win_map = newwin(LONGUEUR+2,LARGEUR+2,4,yScreen/3);
+	else
+		win_map = newwin(xScreen-4,2*yScreen/3,4,yScreen/3);
 
 	WINDOW *win_ennemySpace;
-	win_ennemySpace = newwin(50,30,17,36);
+	win_ennemySpace = newwin(xScreen-5,yScreen/7+1,xScreen/3+2,yScreen/6+2);
 
 	WINDOW *win_weapon;
-	win_weapon = newwin(8,30,33,4);
+	win_weapon = newwin(8,yScreen/7+1,xScreen/2+6,4);
 
 	WINDOW *win_inventory;
-	win_inventory = newwin(30,30,2,4);
+	win_inventory = newwin(xScreen/2+3,yScreen/7+1,2,4);
 
 	WINDOW *win_messages;
-	win_messages = newwin(5,LARGEUR+2,7+LONGUEUR,70);
+	if(xScreen >= LONGUEUR+7 && yScreen >= LARGEUR+2)
+		win_messages = newwin(5,LARGEUR+2,LONGUEUR+7,yScreen/3+1);
+	else
+		win_messages = newwin(5,2*yScreen/3,xScreen-7,yScreen/3+1);
 
 	WINDOW *win_armor;
 	win_armor = newwin(8,30,42,4);
