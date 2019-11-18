@@ -20,7 +20,7 @@ Keys:
 - <ENTER> to use your special power
 - a number between 1 and 9 to use an object which is in your inventory
 
-      ******** TRICKS & TIPS *******
+ ************* TRICKS & TIPS *************
 - Don't forget that you can (and should !) destroy walls.
 - You must pick gems with a contact weapon.
 - Use the shields ! (you can craft them in the crafting menu)
