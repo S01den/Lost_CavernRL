@@ -5,11 +5,10 @@ void questsMenu(Quest actQuest[], int nbrQuestAct, Weapons listWeapons[], Armor 
 {
 	int i = 0;
 	int j = 0;
-	int key = 0;
 	char *typeRewards[] = {"VAX","LIFE POINTS","COMPONENTS","EXOTIC BLOOD"};
 
 	WINDOW *win;
-	win = newwin(20,75,LONGUEUR/2-2,LARGEUR/2+5);
+	win = newwin(20,75,LONGUEUR/2-2,LARGEUR/4-5);
 	box(win,0,0);
 	for(i = 1; i < 75/2-5; i++)
 		mvwprintw(win,1,i,"-");
@@ -69,7 +68,7 @@ void questsMenu(Quest actQuest[], int nbrQuestAct, Weapons listWeapons[], Armor 
 
 	wrefresh(win);
 
-	key = wgetch(win);
+	wgetch(win);
 
 	box(win, ' ', ' ');
 	wborder(win, ' ', ' ', ' ',' ',' ',' ',' ',' ');
@@ -78,7 +77,7 @@ void questsMenu(Quest actQuest[], int nbrQuestAct, Weapons listWeapons[], Armor 
 	delwin(win);	
 }
 
-int pauseMenu()
+int pauseMenu(int y)
 {
 	int ret = 0;
 	int select = 2;
@@ -87,7 +86,7 @@ int pauseMenu()
 	int key = 0;
 
 	WINDOW *win;
-	win = newwin(14,20,LONGUEUR/2-2,LARGEUR/2+60);
+	win = newwin(14,20,LONGUEUR/2,LARGEUR/2+y);
 	box(win,0,0);
 	wattron(win, A_UNDERLINE);
 	mvwprintw(win,4,8,"MENU");
@@ -227,7 +226,7 @@ int pauseMenu()
 void objectMenu(Weapons *weapon, Weapons listWeapons[], Armor *armor, Armor listArmors[], Inventory inventory[], Player *player, int *component, int caseInventory, int *colorPrint, char messagePrint[], int type)
 {
 	WINDOW* win;
-	win = newwin(9,60,(LONGUEUR-5)/2+7,(LARGEUR-15)/2+30);
+	win = newwin(9,60,(LONGUEUR-5)/2+7,(LARGEUR-15)/2);
 	box(win, 0 , 0);
 	
 	if(type == 1) // weapon
@@ -322,13 +321,16 @@ void objectMenu(Weapons *weapon, Weapons listWeapons[], Armor *armor, Armor list
 }
 
 
-int craftMenu(Inventory inventory[], Drug listDrug[], Player player, int *component, int *exoticBlood, int *gem)
+int craftMenu(Inventory inventory[], Drug listDrug[], Player player, int *component, int *exoticBlood, int *gem, int minimal)
 {
 	int ret = 0;
 	int s = 0;
 
 	WINDOW* win;
-	win = newwin(16,42,LONGUEUR/2-5,LARGEUR-20);
+	if(!minimal)
+		win = newwin(16,42,LONGUEUR/2-5,LARGEUR-20);
+	else
+		win = newwin(16,42,LONGUEUR/2,LARGEUR/4);
 	box(win, 0 , 0);
 	wattron(win,A_UNDERLINE);
 	mvwprintw(win,1,1,"COMPONENTS: %d",*component);
@@ -451,7 +453,7 @@ int craftMenu(Inventory inventory[], Drug listDrug[], Player player, int *compon
 			if(*exoticBlood >= 40 && *gem >= 1)
 			{
 				*exoticBlood -= 40;
-				*gem--;
+				(*gem)--;
 				for(s = 0; s < player.inventorySize; s++)
 				{
 					if(inventory[s].type == -1)
@@ -515,7 +517,7 @@ int takeDrug(Map map[LONGUEUR][LARGEUR], Inventory inventory[], Drug drugs[], in
 	char *typeOfDrugs[] = {"VACCIN","STEROID","ANTIDOTE","STIMULANT","HALLUCINOGEN","MEDIPAC","NEUROPARALYSANT"};
 
 	WINDOW* win_menuInvent;
-	win_menuInvent = newwin(8,30,(LONGUEUR-5)/2+7,(LARGEUR-15)/2+50);
+	win_menuInvent = newwin(8,30,(LONGUEUR-5)/2+7,(LARGEUR-15)/2);
 	box(win_menuInvent, 0 , 0);
 	
 	if(inventory[indice].type == 2)
@@ -706,10 +708,13 @@ int takeDrug(Map map[LONGUEUR][LARGEUR], Inventory inventory[], Drug drugs[], in
  return ret;
 }
 
-void gameOver(int source, int score)
+void gameOver(int source, int score, int minimal)
 {
 	WINDOW *win;
-	win = newwin(7,50,LONGUEUR/2-2,LARGEUR/2+60);
+	if(minimal)
+		win = newwin(7,50,LONGUEUR/2-2,LARGEUR/2-5);
+	else
+		win = newwin(7,50,LONGUEUR/2-2,LARGEUR/2+60);
 	box(win,0,0);
 	wattron(win,COLOR_PAIR(197));
 	mvwprintw(win,1,15,"** GAME OVER !**");
@@ -765,7 +770,7 @@ void gameOver(int source, int score)
 	}
 
 
-	int k = wgetch(win);
+	wgetch(win);
 	wattroff(win,A_BOLD);
 	box(win,' ',' ');
 	wborder(win, ' ', ' ', ' ',' ',' ',' ',' ',' ');

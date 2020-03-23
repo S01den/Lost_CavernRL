@@ -21,7 +21,10 @@ _____|\___/ ____/\__|  \____|\__,_|  \_/ \___|_|   _|  _|
 // block a turret with shield and then kill it easily with distance weapons
 // the resistance of crystal armor and the degats of the crystal sword depends on the number of gems the player own.
 
-// HIGH SCORE perso: 1852
+// HIGH SCORE perso: 4805
+
+// Minimal mode = terminal en 132*43
+// run with ./LostCavern 1
 
 void quit();
 
@@ -61,6 +64,7 @@ int main(int argc, char **argv)
 	Armor armorOnFloor[ARMOR_MAX];
 
 	Pnj pnjOnFloor[NBR_PNJ_MAX];
+	int retPause = 0;	
 
 	double diseaseLevel = 0;
 	int diseaseIndice = rand()%3;
@@ -118,11 +122,21 @@ int main(int argc, char **argv)
 	init_pair(COLOR_PACIFICATOR,COLOR_RED, COLOR_WHITE);
 	init_pair(STAIRS_COLOR,COLOR_BLACK,COLOR_WHITE); 
 
+	int minimalMode = 0;
+
+	if(argv[1])
+	{
+		minimalMode = 1;
+	}
+
 	int xScreen = 0, yScreen = 0;
 	getmaxyx(stdscr, xScreen, yScreen); // 55 204 for my screen
 
 	WINDOW *win_Begin;
-	win_Begin = newwin(LONGUEUR,60,xScreen/6-3,yScreen/3);
+	if(!minimalMode)
+		win_Begin = newwin(LONGUEUR,60,xScreen/6-3,yScreen/3);
+	else
+		win_Begin = newwin(LONGUEUR,60,5,30);
 
 	// ************** MAIN MENU *****************
 	keypad(win_Begin, TRUE);
@@ -193,7 +207,7 @@ int main(int argc, char **argv)
 	mvwprintw(win_Begin,30,0,"A rumor say that the MultiplexCorp's founder, who calls\nhimself \"The Architect\", is here, at the edge of the cavern.\nPlease avenge us, destroy the machine and kill the ArchitectOtherwise our cavern will be lost!");
 
 	wattron(win_Begin,A_BOLD);
-	mvwprintw(win_Begin,36,15,"**PRESS A KEY TO BEGIN**");
+	mvwprintw(win_Begin,35,15,"**PRESS A KEY TO BEGIN**");
 	wattroff(win_Begin,A_BOLD);
 
 	wgetch(win_Begin);
@@ -205,31 +219,64 @@ int main(int argc, char **argv)
 	//*******************************************
 
 	WINDOW *win_userSpace;
-	win_userSpace = newwin(xScreen/3,yScreen/7,2,yScreen/6+2);
+	if(!minimalMode)
+		win_userSpace = newwin(xScreen/3,yScreen/7,2,yScreen/6+2);
+	else
+		win_userSpace = newwin(17,28,3,LARGEUR/5+5);
+
+	int width = 0;
+	int posWinMapY = 0;
+	int inventoryPrinted;
 
 	WINDOW *win_map;
-	if(xScreen >= LONGUEUR+2 && yScreen >= LARGEUR+2)
+	if(!minimalMode)
+	{
 		win_map = newwin(LONGUEUR+2,LARGEUR+2,4,yScreen/3);
-	else
+		width = yScreen;
+		posWinMapY = yScreen/3;
+	}
+	else if(xScreen >= LONGUEUR+2 && yScreen >= LARGEUR+2 && !minimalMode)
+	{
 		win_map = newwin(xScreen-7,2*yScreen/3,3,yScreen/3);
+		width = yScreen;
+		posWinMapY = yScreen/3;
+	}
+	else
+	{
+		win_map = newwin(LONGUEUR+2,LARGEUR+2,1,0);
+		width = LARGEUR;
+		posWinMapY = 1;
+	}	
 
 	WINDOW *win_ennemySpace;
-	win_ennemySpace = newwin(xScreen-5,yScreen/7+1,xScreen/3+2,yScreen/6+2);
+	if(!minimalMode)
+		win_ennemySpace = newwin(2*xScreen/3-5,yScreen/7+1,xScreen/3+2,yScreen/6+2);
+	else
+		win_ennemySpace = newwin(LONGUEUR/4+LONGUEUR/2,LARGEUR/5+2,3,LARGEUR-(LARGEUR/5+2));
 
 	WINDOW *win_weapon;
-	win_weapon = newwin(8,yScreen/7+1,xScreen/2+6,4);
+	if(!minimalMode)
+		win_weapon = newwin(8,yScreen/7+1,xScreen/2+6,4);
+	else
+		win_weapon = newwin(8,LARGEUR/5+2,4+LONGUEUR/4+LONGUEUR/2,2);
 
 	WINDOW *win_inventory;
-	win_inventory = newwin(xScreen/2+3,yScreen/7+1,2,4);
+	if(!minimalMode)
+		win_inventory = newwin(xScreen/2+3,yScreen/7+1,2,4);
+	else
+		win_inventory = newwin(LONGUEUR/4+LONGUEUR/2,LARGEUR/5+2,3,2);
 
 	WINDOW *win_messages;
-	if(xScreen >= LONGUEUR+7 && yScreen >= LARGEUR+2)
+	if(!minimalMode)
 		win_messages = newwin(5,LARGEUR+2,LONGUEUR+7,yScreen/3+1);
-	else
-		win_messages = newwin(3,2*yScreen/3,xScreen-3,yScreen/3+1);
+	if(minimalMode)
+		win_messages = newwin(5,4*LARGEUR/5-2,LONGUEUR/4+LONGUEUR/2+7,5+LARGEUR/5);
 
 	WINDOW *win_armor;
-	win_armor = newwin(8,30,42,4);
+	if(!minimalMode)
+		win_armor = newwin(8,30,42,4);
+	else
+		win_armor = newwin(8,28,21,LARGEUR/5+5);
 
 	char messagePrint[300];
 	int colorPrint = 0;
@@ -238,7 +285,6 @@ int main(int argc, char **argv)
 	keypad(win_map, TRUE);
     scrollok(win_map, TRUE);
 	cbreak();
-	resizeterm(55,204);
 
 	int nbrEnnemiesMax = 18;
 	Ennemy ennemies[ENEMIES_MAX];
@@ -306,7 +352,8 @@ int main(int argc, char **argv)
 	{
 		source = 10;
 
-		iaCore(ennemies,&player,map,&nbrEnnemyInFloor,messagePrint,&colorPrint,&armorHold,win_messages,&source);
+		if(!inventoryPrinted)
+			iaCore(ennemies,&player,map,&nbrEnnemyInFloor,messagePrint,&colorPrint,&armorHold,win_messages,&source);
 		
 		indicePnj = -1;
 		int indiceQuest = 0;	
@@ -455,22 +502,70 @@ int main(int argc, char **argv)
 
 			recalcScreen(win_map,map,nbrEnnemyInFloor,ennemies);
 			calcFOV(map,player.view,player.x,player.y,win_map,ennemies,nbrEnnemyInFloor,&ennemyPresent,player.colorBlind,stone,drugs,nbrDrugsOnFloor,weaponsOnFloor,nbrWeapons,armorOnFloor,nbrArmors,pnjOnFloor,nbrPnjOnFloor);
-			printScreenUser(win_userSpace,player,powerUsed,diseaseName[diseaseIndice],(int)diseaseLevel, nbrEnnemiesKilled);
 			
-			/*if(ennemyPresent == 1)
-			{*/
-			printEnnemy(win_ennemySpace,ennemies,nbrEnnemyInFloor);
-			//}
+			if(minimalMode == 0)
+			{
+				printScreenUser(win_userSpace,player,powerUsed,diseaseName[diseaseIndice],(int)diseaseLevel, nbrEnnemiesKilled);
+				printEnnemy(win_ennemySpace,ennemies,nbrEnnemyInFloor);
 
-			setMessage(win_messages,messagePrint,colorPrint);
-			printWeapon(win_weapon,weaponHold);
-			printInventory(win_inventory, component, exoticBlood, gem, player, inventory, drugs, listWeapons, listArmors);
-			printArmor(win_armor, armorHold);
-			if(xScreen >= LONGUEUR+6)
-				mvwprintw(stdscr,LONGUEUR+6,yScreen/7+1,", : QUESTS    [ENTER] : SPECIAL POWER   c : CRAFTING MENU   [ESC] : MENU");
+				setMessage(win_messages,messagePrint,colorPrint);
+
+				printWeapon(win_weapon,weaponHold);
+				printInventory(win_inventory, component, exoticBlood, gem, player, inventory, drugs, listWeapons, listArmors);
+				printArmor(win_armor, armorHold);
+				
+				if(xScreen >= LONGUEUR+6)
+					mvwprintw(stdscr,LONGUEUR+6,	yScreen/3,", : QUESTS    [ENTER] : SPECIAL POWER   c : CRAFTING MENU   [ESC] : MENU");
+				else
+					mvwprintw(stdscr,xScreen-4,yScreen/3,", : QUESTS    [ENTER] : SPECIAL POWER   c : CRAFTING MENU   [ESC] : MENU");
+				mvwprintw(stdscr,3,yScreen-85,"*** FLOOR: -%d ***",floor);
+			}
 			else
-				mvwprintw(stdscr,xScreen-4,yScreen/7+1,", : QUESTS    [ENTER] : SPECIAL POWER   c : CRAFTING MENU   [ESC] : MENU");
-			mvwprintw(stdscr,3,yScreen-85,"*** FLOOR: -%d ***",floor);
+			{
+				mvwprintw(stdscr,0,0,"%s [ Life: %d/100 | Strength: %d | Agility: %d | Hate: %d | NbrKill: %d | Disease Level: %d/100 ]",player.name,player.life,player.strength,player.agility,player.hate,nbrEnnemiesKilled,(int)diseaseLevel);
+				mvwprintw(stdscr,0,LARGEUR-10,"| FLOOR: -%d",floor);
+				mvwprintw(stdscr,LONGUEUR+3,1,"[KEYS: [,] : QUESTS | [ENTER] : SPECIAL POWER | [c] : CRAFTING MENU | [ESC] : MENU | [i] : Inventory and Player Menu]");
+				if(powerUsed)
+				{
+					wattron(stdscr,COLOR_PAIR(197));
+					mvwprintw(stdscr,0,LARGEUR-25,"SPECIAL: OFF");
+					wattroff(stdscr,COLOR_PAIR(197));
+				}
+				else
+				{
+					wattron(stdscr,COLOR_PAIR(47));
+					mvwprintw(stdscr,0,LARGEUR-25,"SPECIAL: ON");
+					wattroff(stdscr,COLOR_PAIR(47));	
+				}
+				if(inventoryPrinted)
+				{
+					wclear(win_map);
+					wrefresh(win_map);
+					printInventory(win_inventory, component, exoticBlood, gem, player, inventory, drugs, listWeapons, listArmors);
+					printArmor(win_armor, armorHold);
+					printWeapon(win_weapon,weaponHold);
+					printEnnemy(win_ennemySpace,ennemies,nbrEnnemyInFloor);
+					printScreenUser(win_userSpace,player,powerUsed,diseaseName[diseaseIndice],(int)diseaseLevel, nbrEnnemiesKilled);
+					setMessage(win_messages,messagePrint,colorPrint);
+					wrefresh(win_inventory);
+				}
+				else
+				{
+					wclear(win_inventory);
+					wrefresh(win_inventory);
+					wclear(win_armor);
+					wrefresh(win_armor);
+					wclear(win_weapon);
+					wrefresh(win_weapon);
+					wclear(win_ennemySpace);
+					wrefresh(win_ennemySpace);
+					wclear(win_userSpace);
+					wrefresh(win_userSpace);			
+					wclear(win_messages);
+					wrefresh(win_messages);
+					box(win_map,0,0);
+				}
+			}
 
 			if(gameStatus == 2)
 			{	
@@ -706,22 +801,22 @@ int main(int argc, char **argv)
 				switch(c)
 				{
 					case KEY_UP:
-						if(map[player.x-1][player.y].content != WALL)
+						if(map[player.x-1][player.y].content != WALL && !inventoryPrinted)
 							player.x--;
 						gameStatus = 1;
 						break;
 					case KEY_DOWN:
-						if(map[player.x+1][player.y].content != WALL)
+						if(map[player.x+1][player.y].content != WALL && !inventoryPrinted)
 							player.x++;
 						gameStatus = 1;
 						break;
 					case KEY_LEFT:
-						if(map[player.x][player.y-1].content != WALL)					
+						if(map[player.x][player.y-1].content != WALL && !inventoryPrinted)			
 							player.y--;
 						gameStatus = 1;
 						break;
 					case KEY_RIGHT:
-						if(map[player.x][player.y+1].content != WALL)
+						if(map[player.x][player.y+1].content != WALL && !inventoryPrinted)
 							player.y++;
 						gameStatus = 1;
 						break;
@@ -755,12 +850,12 @@ int main(int argc, char **argv)
 						}
 						break;
 					case 27:
-						if(pauseMenu() == 1)
+						retPause = pauseMenu(posWinMapY); 
+						if(retPause == 1)
 						{
 							quit();
 							return 0;
 						}
-
 						break;
 					case ' ':
 						gameStatus = 1;
@@ -831,7 +926,7 @@ int main(int argc, char **argv)
 						break;
 
 					case 'c':
-						craftMenu(inventory,drugs,player,&component,&exoticBlood,&gem);
+						craftMenu(inventory,drugs,player,&component,&exoticBlood,&gem,minimalMode);
 						wclear(win_userSpace);
 						wclear(win_messages);	
 						wclear(win_inventory);				
@@ -842,6 +937,9 @@ int main(int argc, char **argv)
 						wclear(win_userSpace);
 						wclear(win_messages);	
 						wclear(win_inventory);
+						break;
+					case 'i':
+						inventoryPrinted ^= 1;
 						break;
 
 					default:
@@ -1458,7 +1556,7 @@ int main(int argc, char **argv)
 			score += component;
 			score += gem*10;
 			score += nbrQuestsDone*20;
-			gameOver(source,score);
+			gameOver(source,score,minimalMode);
 			break;
 		}
 

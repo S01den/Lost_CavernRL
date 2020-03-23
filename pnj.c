@@ -120,7 +120,7 @@ int sayQuest(Pnj pnj, Quest listQuests[], Quest actQuests[], int *nbrQuestAct, W
 					}
 				}
 			}
-			*nbrQuestAct++;
+			(*nbrQuestAct)++;
 		}
 
 		box(win, ' ', ' ');

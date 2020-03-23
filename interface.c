@@ -109,6 +109,7 @@ void printBar(WINDOW *win, char name[15],int attribute, int x, int y, int colorp
 
 void printEnnemy(WINDOW *win, Ennemy ennemies[], int nbrEnnemyFloor)
 {
+	box(win,0,0);
 	char *classeEnnemy[] = {"???","DROID","SENTRY","GUARDIAN","GUARDIAN"};
 	int i = 0;
 	int c = 1;

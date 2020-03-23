@@ -37,7 +37,7 @@ int hit(char dirChar, int dirX, int dirY, WINDOW *win_map, Player *player, Weapo
 		*retHit = burn(map,weaponHold,ennemies,dirChar,*player,nbrEnnemyInFloor,component,win_map);
 		ret = *retHit;
 	}
-	else if(listWeapons[weaponHold->indice].type == 3 && *gem-1 >= 0) // crystal canon
+	else if(listWeapons[weaponHold->indice].type == 3 && (*gem)-1 >= 0) // crystal canon
 	{
 		(*gem)--;
 		flashBomb(win_map);
