@@ -8,7 +8,7 @@ In Lost Cavern, you are an activist in a futuristic world who struggle a huge mu
 ![](https://github.com/S01den/Lost_CavernRL/blob/master/images/imageTitle.png)
 
 A big screen is recommended.
-If the menus are weirdly displayed, try to launch with minimal mode (./LostCavern 1)
+If the menus are weirdly displayed, try to launch in minimal mode (134\*43) with ./LostCavern 1
 
 Keys: 
 - Arrows to move
