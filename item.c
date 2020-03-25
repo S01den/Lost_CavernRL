@@ -235,14 +235,14 @@ void initObjects(Weapons listWeapons[], Armor listArmor[])
 
 	listWeapons[1].name = "DARTS";
 	listWeapons[1].degat = 8;
-	listWeapons[1].efficiency = 65;
+	listWeapons[1].efficiency = 70;
 	listWeapons[1].strengthRequired = 5;
 	listWeapons[1].state = 10;
 	listWeapons[1].range = 4;
 	listWeapons[1].type = 1;
 	listWeapons[1].cost = 5;
 	listWeapons[1].rarity = 1;
-	listWeapons[1].description = "Nothing more to add";
+	listWeapons[1].description = "Random effect !";
 
 	listWeapons[2].name = "BLASTER V1";
 	listWeapons[2].degat = 9;

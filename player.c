@@ -311,7 +311,20 @@ int shotLine(Map map[LONGUEUR][LARGEUR],Weapons *weaponHold, Ennemy ennemies[], 
 			if(ennemySeenIndice >= 0)
 			{
 				ennemies[ennemySeenIndice].life -= abs(weaponHold->degat+player.agility/4);
-
+				if(weaponHold->indice == 1) // darts random effect
+				{
+					if(rand()%4 == 0)
+					{
+						if(rand()%2 == 1)
+						{
+							ennemies[ennemySeenIndice].effect = 1;
+						}
+						else
+						{
+							ennemies[ennemySeenIndice].effect = 2;
+						}
+					}
+				}
 				if(ennemies[ennemySeenIndice].life <= 0)
 				{
 					ret = 1;

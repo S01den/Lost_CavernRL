@@ -722,6 +722,7 @@ void setEnnemies(Map map[LONGUEUR][LARGEUR], Ennemy ennemies[], int nbrEnnemies,
 
 		if(rollType < 40) // droid
 		{
+			ennemies[i].boss = 0;
 			ennemies[i].type = 1;
 			ennemies[i].efficiency = 90;
 			ennemies[i].life = 20+2*floor;
@@ -732,6 +733,7 @@ void setEnnemies(Map map[LONGUEUR][LARGEUR], Ennemy ennemies[], int nbrEnnemies,
 		}
 		else if(rollType >= 40 && rollType < 60)
 		{
+			ennemies[i].boss = 0;
 			ennemies[i].type = 2;
 			ennemies[i].efficiency = 85;
 			ennemies[i].life = 40+2*floor;
@@ -742,6 +744,7 @@ void setEnnemies(Map map[LONGUEUR][LARGEUR], Ennemy ennemies[], int nbrEnnemies,
 		}
 		else if(rollType >= 60 && rollType < 90)
 		{
+			ennemies[i].boss = 0;
 			ennemies[i].type = 3; 
 			ennemies[i].efficiency = 80;
 			ennemies[i].life = 30+2*floor;
@@ -753,6 +756,7 @@ void setEnnemies(Map map[LONGUEUR][LARGEUR], Ennemy ennemies[], int nbrEnnemies,
 		}
 		else if(rollType >= 90 && rollType < 100)
 		{
+			ennemies[i].boss = 0;
 			ennemies[i].type = 4;
 			ennemies[i].efficiency = 100;
 			ennemies[i].life = 15+2*floor;
@@ -797,9 +801,6 @@ void setEnnemies(Map map[LONGUEUR][LARGEUR], Ennemy ennemies[], int nbrEnnemies,
 			name[6] = '&';
 			strcpy(ennemies[i].name,name);
 		}
-		ennemies[i].boss = 0;
-
-
 	}
 
 	*nbrEnnemyInFloor = nbrEnnemiesRand;

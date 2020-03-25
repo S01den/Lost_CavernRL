@@ -277,6 +277,11 @@ void printInventory(WINDOW *win, int component, int exoticBlood, int gem, Player
 					mvwprintw(win,6+i,1,"%c) * : LAVA BUCKET",49+i);
 					wattroff(win,COLOR_PAIR(COLOR_LAVA));
 					break;
+				case 6:
+					wattron(win,COLOR_PAIR(12));
+					mvwprintw(win,6+i,1,"THE CLONE CAPSULE");
+					wattroff(win,COLOR_PAIR(12));	
+					break;
 				default:
 					break;
 			}
