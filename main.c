@@ -42,6 +42,7 @@ int main(int argc, char **argv)
 	int score = 0;
 	int nbrQuestsDone = 0;
 	int source = 0;
+	int keyboardType = 0; // 0 = azerty | 1 = qwerty
 
 	char *diseaseName[] = {"Yurix B","H9YB-3","Zoko"}; // yurix B = parasite extraterrestre ; H9YB-3 = Virus sythétisé par le Multiplex ; Zoko = Malédiction
 	// yurix B = AGRESSIVE, A LOT OF DEGATS ; H9YB-3 = COLOR BLIND AND VIEW; ZOKO = DECREASE STATS AND CAN PARALYSE
@@ -850,7 +851,7 @@ int main(int argc, char **argv)
 						}
 						break;
 					case 27:
-						retPause = pauseMenu(posWinMapY); 
+						retPause = pauseMenu(posWinMapY,&keyboardType); 
 						if(retPause == 1)
 						{
 							quit();
@@ -861,68 +862,111 @@ int main(int argc, char **argv)
 						gameStatus = 1;
 						break;	
 					case 'z':
-						wclear(win_weapon);
-						wclear(win_ennemySpace);
-						wclear(win_userSpace);
-						hit('z', -1, 0, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
-						gameStatus = 1;
+						if(keyboardType == 0)
+						{
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('z', -1, 0, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;
+						}
+						else
+						{
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('w', 1, -1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;		
+						}
 						break;
 
 					case 's':
-						wclear(win_weapon);
-						wclear(win_ennemySpace);
-						wclear(win_userSpace);
-						hit('s', 1, 0, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
-						gameStatus = 1;
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('s', 1, 0, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;
 						break;
 
 					case 'q':
-						wclear(win_weapon);
-						wclear(win_ennemySpace);
-						wclear(win_userSpace);
-						hit('q', 0, -1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
-						gameStatus = 1;
+						if(keyboardType == 0)
+						{
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('q', 0, -1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;
+						}
+						else
+						{
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('a', -1, -1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;
+						}
 						break;
 
 					case 'd':
-						wclear(win_weapon);
-						wclear(win_ennemySpace);
-						wclear(win_userSpace);
-						hit('d', 0, 1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
-						gameStatus = 1;
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('d', 0, 1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;
 						break;
 
 					case 'a':
-						wclear(win_weapon);
-						wclear(win_ennemySpace);
-						wclear(win_userSpace);
-						hit('a', -1, -1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
-						gameStatus = 1;
+						if(keyboardType == 0)
+						{
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('a', -1, -1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;
+						}
+						else
+						{
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('q', 0, -1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;
+						}
 						break;
 
 					case 'e':
-						wclear(win_weapon);
-						wclear(win_ennemySpace);
-						wclear(win_userSpace);
-						hit('e', -1, 1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
-						gameStatus = 1;
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('e', -1, 1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;
 						break;
 
 					case 'x':
-						wclear(win_weapon);
-						wclear(win_ennemySpace);
-						wclear(win_userSpace);
-						hit('x', 1, 1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
-						gameStatus = 1;
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('x', 1, 1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;
 						break;
 
 					case 'w':
-						wclear(win_weapon);
-						wclear(win_ennemySpace);
-						wclear(win_userSpace);
-						hit('w', 1, -1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
-
-						gameStatus = 1;
+						if(keyboardType == 0)
+						{
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('w', 1, -1, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;
+						}
+						else
+						{
+							wclear(win_weapon);
+							wclear(win_ennemySpace);
+							wclear(win_userSpace);
+							hit('z', -1, 0, win_map, &player, &weaponHold, listWeapons, map, &gem, ennemies, nbrEnnemyInFloor, &component, &exoticBlood, &compBefore, &indiceEnnemy, &retHit, pnjOnFloor, nbrPnjOnFloor, &indicePnj);
+							gameStatus = 1;
+						}
 						break;
 
 					case 'c':

@@ -77,7 +77,7 @@ void questsMenu(Quest actQuest[], int nbrQuestAct, Weapons listWeapons[], Armor 
 	delwin(win);	
 }
 
-int pauseMenu(int y)
+int pauseMenu(int y, int *keyboard)
 {
 	int ret = 0;
 	int select = 2;
@@ -93,11 +93,11 @@ int pauseMenu(int y)
 	wattroff(win, A_UNDERLINE);
 	keypad(win, TRUE);
 
-	char *menus[] = {"KEYS LIST","TILES LIST","RETURN TO GAME","EXIT THE GAME"};
+	char *menus[] = {"KEYS LIST","TILES LIST","RETURN TO GAME","CHANGE KEYBOARD","EXIT THE GAME"};
 
 	while(1)
 	{
-		for(i = 0; i < 4; i++)
+		for(i = 0; i < 5; i++)
 		{
 			if(i == select)
 			{
@@ -117,7 +117,7 @@ int pauseMenu(int y)
 		switch(key)
 		{	
 			case KEY_DOWN:
-				if(select+1<=3)
+				if(select+1<=4)
 					select++;
 				break;
 
@@ -135,7 +135,7 @@ int pauseMenu(int y)
 			break;
 	}
 
-	if(choice == 3)
+	if(choice == 4)
 		ret = 1;
 
 	box(win, ' ', ' ');
@@ -218,6 +218,10 @@ int pauseMenu(int y)
 		wclear(winKey);
 		wrefresh(winKey);
 		delwin(winKey);	
+	}
+	if(choice == 3)
+	{
+		(*keyboard) ^= 1;
 	}
 
 	return ret;
