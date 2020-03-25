@@ -9,10 +9,11 @@ In Lost Cavern, you are an ecological activist in a futuristic world who struggl
 
 A big screen is recommended.
 If the menus are weirdly displayed, try to launch in minimal mode (134\*43) with ./LostCavern 1
+The default keyboard type is QWERTY.
 
 Keys: 
 - Arrows to move
-- zsqd to attack (aewx in diagonal), interact with a npc or destroy a wall
+- zsqd to attack (aewx in diagonal) or qsad on a qwerty keyboard (to change the keyboard type, go to the menu and select the option "CHANGE KEYBOARD"), interact with a npc or destroy a wall
 - 'c' to display the crafting menu
 - ',' to dispaly the quest menu
 - ESC to display the help menu
