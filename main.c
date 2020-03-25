@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 	int score = 0;
 	int nbrQuestsDone = 0;
 	int source = 0;
-	int keyboardType = 0; // 0 = azerty | 1 = qwerty
+	int keyboardType = 1; // 0 = azerty | 1 = qwerty
 
 	char *diseaseName[] = {"Yurix B","H9YB-3","Zoko"}; // yurix B = parasite extraterrestre ; H9YB-3 = Virus sythétisé par le Multiplex ; Zoko = Malédiction
 	// yurix B = AGRESSIVE, A LOT OF DEGATS ; H9YB-3 = COLOR BLIND AND VIEW; ZOKO = DECREASE STATS AND CAN PARALYSE
